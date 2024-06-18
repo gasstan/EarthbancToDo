@@ -33,6 +33,7 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
 ktor-client = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktorVersion" }
 ktor-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktorVersion" }
+ktor-logging = { group = "io.ktor", name = "ktor-client-logging-jvm", version.ref = "ktorVersion" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 koin-core = { group = "io.insert-koin", name = "koin-android", version.ref = "koinVersion" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinVersion" }
@@ -46,5 +47,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 
 [bundles]
 androidx-room = ["androidx-room-runtime", "androidx-room-ktx"]
-ktor = ["ktor-client", "ktor-serialization"]
+ktor = ["ktor-client", "ktor-serialization", "ktor-logging"]
 koin = ["koin-core", "koin-compose"]
