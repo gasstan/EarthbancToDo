@@ -1,11 +1,15 @@
 package com.earthbanc.todo.model
 
+import com.earthbanc.todo.utils.InstantSerializer
 import kotlinx.serialization.SerialName
-import java.time.LocalDateTime
+import kotlinx.serialization.Serializable
+import java.time.Instant
 
+@Serializable
 data class TodoItem(
   @SerialName("createdAt")
-  var createdAt: LocalDateTime,
+  @Serializable(with = InstantSerializer::class)
+  var createdAt: Instant,
   @SerialName("title")
   var title: String,
   @SerialName("description")
