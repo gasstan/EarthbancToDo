@@ -1,6 +1,8 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.jetbrains.kotlin.android)
+  alias(libs.plugins.kapt)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -47,15 +49,30 @@ android {
 }
 
 dependencies {
-
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
+
+  //compose
   implementation(libs.androidx.activity.compose)
   implementation(platform(libs.androidx.compose.bom))
+
+  //ui
   implementation(libs.androidx.ui)
   implementation(libs.androidx.ui.graphics)
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
+
+  //room
+  implementation(libs.bundles.androidx.room)
+  kapt(libs.androidx.room.compiler)
+
+  //ktor
+  implementation(libs.bundles.ktor)
+  implementation(libs.kotlin.serialization)
+
+  //koin
+  implementation(libs.bundles.koin)
+
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
