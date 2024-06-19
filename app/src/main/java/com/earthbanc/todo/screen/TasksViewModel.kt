@@ -1,7 +1,6 @@
 package com.earthbanc.todo.screen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.earthbanc.todo.model.TodoItem
@@ -23,7 +22,6 @@ class TasksViewModel(private val tasksRepo: TasksRepository) : ViewModel() {
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Resource.Empty())
 
   fun updateTask(todoItem: TodoItem) {
-    Log.e("HomeViewModel", "updating task")
     viewModelScope.launch { tasksRepo.insertTask(todoItem) }
   }
 

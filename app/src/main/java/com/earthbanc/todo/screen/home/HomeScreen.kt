@@ -16,36 +16,31 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.minimumInteractiveComponentSize
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.earthbanc.todo.R
 import com.earthbanc.todo.model.TodoItem
 import com.earthbanc.todo.navigation.Destinations
 import com.earthbanc.todo.screen.TasksViewModel
+import com.earthbanc.todo.utils.onLoading
 import com.earthbanc.todo.utils.onSuccess
 import org.koin.androidx.compose.koinViewModel
 
@@ -66,8 +61,8 @@ fun HomeScreen(navController: NavHostController, viewModel: TasksViewModel = koi
         taskToDelete?.let { viewModel.deleteTask(it) }
         taskToDelete = null
       },
-      dialogTitle = "Delete Item",
-      dialogText = "Do you really want to delete this item?",
+      dialogTitle = stringResource(R.string.delete_item),
+      dialogText = stringResource(R.string.delete_item_desc),
       icon = Icons.Default.Delete
     )
   }
@@ -81,7 +76,7 @@ fun HomeScreen(navController: NavHostController, viewModel: TasksViewModel = koi
       ) {
         Icon(
           Icons.Default.Add,
-          contentDescription = "Add"
+          contentDescription = stringResource(R.string.add)
         )
       }
     },
@@ -106,6 +101,14 @@ fun HomeScreen(navController: NavHostController, viewModel: TasksViewModel = koi
           modifier = Modifier.padding(innerPadding)
         )
       }
+      .onLoading {
+        Box(
+          modifier = Modifier.fillMaxSize(),
+          contentAlignment = Alignment.Center
+        ) {
+          CircularProgressIndicator()
+        }
+      }
   }
 }
 
@@ -121,7 +124,7 @@ private fun ContentComposable(
 
   LazyColumn(
     modifier = modifier.animateContentSize(),
-    contentPadding = PaddingValues(horizontal = 16.dp)
+    contentPadding = PaddingValues(horizontal = dimensionResource(id = R.dimen.padding))
   ) {
     items(tasks, key = { it.id }) { task ->
       SwipeToDelete(
@@ -134,7 +137,7 @@ private fun ContentComposable(
           onCheckBoxClick = onCheckBoxClick
         )
       }
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
     }
   }
 }
@@ -164,52 +167,3 @@ private fun TodoItemComposable(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SwipeToDelete(
-  modifier: Modifier = Modifier,
-  onDelete: () -> Unit,
-  content: @Composable () -> Unit,
-) {
-  val swipeState = rememberSwipeToDismissBoxState()
-
-  val alignment = when (swipeState.dismissDirection) {
-    SwipeToDismissBoxValue.StartToEnd -> {
-      Alignment.CenterStart
-    }
-
-    else -> {
-      Alignment.CenterEnd
-    }
-  }
-
-  SwipeToDismissBox(
-    state = swipeState,
-    backgroundContent = {
-      Box(
-        contentAlignment = alignment,
-        modifier = Modifier
-          .fillMaxSize()
-      ) {
-        Icon(
-          modifier = Modifier.minimumInteractiveComponentSize(),
-          tint = Color.Red,
-          imageVector = Icons.Outlined.Delete, contentDescription = null
-        )
-      }
-    },
-    modifier = modifier
-  ) {
-    content()
-  }
-
-  LaunchedEffect(swipeState.currentValue) {
-    when (swipeState.currentValue) {
-      SwipeToDismissBoxValue.Settled -> {}
-      else -> {
-        onDelete()
-        swipeState.reset()
-      }
-    }
-  }
-}

@@ -25,10 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -60,7 +60,7 @@ fun ItemDetail(
           IconButton(onClick = navController::popBackStack) {
             Icon(
               imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-              contentDescription = "Localized description"
+              contentDescription = null
             )
           }
         })
@@ -89,7 +89,7 @@ private fun ContentComposable(
 
   Card(
     modifier = modifier
-      .padding(8.dp)
+      .padding(dimensionResource(id = R.dimen.padding_small))
       .fillMaxWidth()
   ) {
     Column {
@@ -113,10 +113,10 @@ private fun ContentComposable(
       }
     }
     Column(
-      modifier = Modifier.padding(8.dp)
+      modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
     ) {
       Text(text = task.title, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
       Text(text = task.description)
     }
   }

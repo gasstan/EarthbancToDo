@@ -6,6 +6,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import com.earthbanc.todo.R
 
 @Composable
 fun DeleteItemDialog(
@@ -34,7 +36,7 @@ fun DeleteItemDialog(
           onConfirmation()
         }
       ) {
-        Text("Confirm")
+        Text(stringResource(R.string.confirm))
       }
     },
     dismissButton = {
@@ -43,7 +45,7 @@ fun DeleteItemDialog(
           onDismissRequest()
         }
       ) {
-        Text("Dismiss")
+        Text(stringResource(R.string.dismiss))
       }
     }
   )

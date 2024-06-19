@@ -20,10 +20,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.earthbanc.todo.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,38 +43,38 @@ fun AddNewTaskBottomSheet(onDismiss: () -> Unit, onAddNewTask: (String, String) 
   ModalBottomSheet(
     modifier = Modifier
       .fillMaxHeight()
-      .padding(8.dp),
+      .padding(dimensionResource(id = R.dimen.padding_small)),
     sheetState = sheetState,
     onDismissRequest = onDismiss,
   ) {
-    Column(modifier = Modifier.padding(8.dp)) {
+    Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))) {
       Text(
-        text = "Add new task",
+        text = stringResource(R.string.add_new_task),
         textAlign = TextAlign.Center,
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.fillMaxWidth()
       )
-      Spacer(modifier = Modifier.height(16.dp))
+      Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding)))
       TextField(
         value = title,
         onValueChange = {
           title = it
           if (it.isNotEmpty()) isTitleError = false
         },
-        supportingText = { if (isTitleError) Text(text = "* this field is mandatory") },
+        supportingText = { if (isTitleError) Text(text = stringResource(R.string.this_field_is_mandatory)) },
         isError = isTitleError,
-        label = { Text(text = "Title") },
+        label = { Text(text = stringResource(R.string.title)) },
         modifier = Modifier.fillMaxWidth()
       )
-      Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
       TextField(
         value = description,
         onValueChange = { description = it },
-        label = { Text(text = "Description") },
+        label = { Text(text = stringResource(R.string.description)) },
         modifier = Modifier.fillMaxWidth()
       )
-      Spacer(modifier = Modifier.height(32.dp))
+      Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_large)))
       Button(
         onClick = {
           if (title.isEmpty()) {
@@ -82,10 +84,10 @@ fun AddNewTaskBottomSheet(onDismiss: () -> Unit, onAddNewTask: (String, String) 
           onAddNewTask(title, description)
           onDismiss()
         },
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_small)),
         modifier = Modifier.align(Alignment.End)
       ) {
-        Text(text = "Add")
+        Text(text = stringResource(id = R.string.add))
       }
     }
   }
