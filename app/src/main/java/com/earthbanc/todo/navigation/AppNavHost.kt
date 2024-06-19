@@ -23,7 +23,7 @@ fun AppNavHost(
       HomeScreen(navController)
     }
 
-    composable(Destinations.Detail("taskId").route) {
+    composable(Destinations.Detail("{taskId}").route) {
       val taskId = it.arguments?.getString("taskId")
       ItemDetail(taskId = taskId, navController = navController)
     }
@@ -36,6 +36,6 @@ fun AppNavHost(
 
 sealed class Destinations(val route: String) {
   object Home : Destinations("home")
-  class Detail(taskId: String) : Destinations("detail/{$taskId}")
+  class Detail(taskId: String) : Destinations("detail/$taskId")
   object NewItem : Destinations("newItem")
 }

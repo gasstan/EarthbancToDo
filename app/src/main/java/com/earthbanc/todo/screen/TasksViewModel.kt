@@ -8,6 +8,7 @@ import com.earthbanc.todo.repository.TasksRepository
 import com.earthbanc.todo.utils.Resource
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -16,7 +17,7 @@ class TasksViewModel(private val tasksRepo: TasksRepository) : ViewModel() {
   val tasks: StateFlow<Resource<List<TodoItem>>> =
     tasksRepo.getTasks().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Resource.Empty())
 
-  fun getTask(id: String) = tasksRepo.getTask(id)
+  fun getTask(id: String) = tasksRepo.getTask(id).distinctUntilChanged()
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Resource.Empty())
 
   fun updateTask(todoItem: TodoItem) {

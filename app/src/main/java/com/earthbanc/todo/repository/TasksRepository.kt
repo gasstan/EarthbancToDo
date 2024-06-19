@@ -38,7 +38,7 @@ class TasksRepository(
     } else {
       emit(Resource.Success(item))
     }
-  }
+  }.flowOn(Dispatchers.IO)
 
   suspend fun insertTask(todoItem: TodoItem) {
     database.todoItemDao().insertTask(todoItem)
