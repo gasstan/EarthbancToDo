@@ -1,5 +1,7 @@
 package com.earthbanc.todo.utils
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
@@ -16,6 +18,7 @@ object InstantSerializer : KSerializer<Instant> {
     encoder.encodeString(value.toString())
   }
 
+  @RequiresApi(Build.VERSION_CODES.O)
   override fun deserialize(decoder: Decoder): Instant =
     Instant.parse(decoder.decodeString())
 

@@ -54,7 +54,11 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
   ) { innerPadding ->
     tasks
       .onSuccess {
-        ContentComposable(tasks = it, modifier = Modifier.padding(innerPadding))
+        ContentComposable(
+          tasks = it,
+          onCheckBoxClick = viewModel::updateTask,
+          modifier = Modifier.padding(innerPadding)
+        )
       }
       .onEmpty { }
       .onLoading { }
@@ -65,12 +69,13 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
 @Composable
 private fun ContentComposable(
   tasks: List<TodoItem>,
+  onCheckBoxClick: (TodoItem) -> Unit,
   modifier: Modifier = Modifier
 ) {
 
   LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
     items(tasks) { todoItem ->
-      TodoItemComposable(item = todoItem, onItemClick = {}, onCheckBoxClick = {})
+      TodoItemComposable(item = todoItem, onItemClick = {}, onCheckBoxClick = onCheckBoxClick)
       Spacer(modifier = Modifier.height(8.dp))
     }
   }
@@ -94,7 +99,7 @@ private fun TodoItemComposable(
     ) {
       Checkbox(checked = checked, onCheckedChange = {
         checked = it
-        onCheckBoxClick(item)
+        onCheckBoxClick(item.copy(completed = it))
       })
       Text(text = item.title)
     }
