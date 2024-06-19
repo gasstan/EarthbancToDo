@@ -4,7 +4,7 @@ import com.earthbanc.todo.db.provideDatabase
 import com.earthbanc.todo.network.TasksApi
 import com.earthbanc.todo.network.provideKtorHttpClient
 import com.earthbanc.todo.repository.TasksRepository
-import com.earthbanc.todo.screen.home.HomeViewModel
+import com.earthbanc.todo.screen.TasksViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -15,5 +15,5 @@ val appModule = module {
   single { TasksApi(get()) }
   single { TasksRepository(get(), get()) }
 
-  viewModel { HomeViewModel(get()) }
+  viewModel { TasksViewModel(get()) }
 }

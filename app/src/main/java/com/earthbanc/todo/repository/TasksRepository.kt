@@ -30,28 +30,38 @@ class TasksRepository(
       }
     }.flowOn(Dispatchers.Default)
 
+  fun getTask(id: String) = flow {
+    emit(Resource.Loading())
+    val item = database.todoItemDao().getTask(id)
+    if (item == null) {
+      emit(Resource.Empty())
+    } else {
+      emit(Resource.Success(item))
+    }
+  }
+
   suspend fun insertTask(todoItem: TodoItem) {
     database.todoItemDao().insertTask(todoItem)
   }
 
   private suspend fun getTasksFromNetwork(): Flow<Resource<List<TodoItem>>> =
     flow {
-        val tasks = try {
-          tasksApi.getTasks()
-        } catch (e: ServerResponseException) {
-          emit(Resource.Error(e.localizedMessage ?: "Unknown exception"))
-          return@flow
-        } catch (e: ClientRequestException) {
-          emit(Resource.Error("${e.response.status} ${e.localizedMessage ?: "Unknown exception"}"))
-          return@flow
-        }
+      val tasks = try {
+        tasksApi.getTasks()
+      } catch (e: ServerResponseException) {
+        emit(Resource.Error(e.localizedMessage ?: "Unknown exception"))
+        return@flow
+      } catch (e: ClientRequestException) {
+        emit(Resource.Error("${e.response.status} ${e.localizedMessage ?: "Unknown exception"}"))
+        return@flow
+      }
 
-        if (tasks.isEmpty()) {
-          emit(Resource.Empty())
-        } else {
-          database.todoItemDao().insertTasks(tasks)
-          emitAll(getTasksFromDatabase())
-        }
+      if (tasks.isEmpty()) {
+        emit(Resource.Empty())
+      } else {
+        database.todoItemDao().insertTasks(tasks)
+        emitAll(getTasksFromDatabase())
+      }
     }.flowOn(Dispatchers.Default)
 
   private suspend fun getTasksFromDatabase(): Flow<Resource<List<TodoItem>>> =

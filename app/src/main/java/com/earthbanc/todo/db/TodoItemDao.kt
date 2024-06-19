@@ -15,9 +15,12 @@ interface TodoItemDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertTasks(todoItems: List<TodoItem>)
 
+  @Query("SELECT * FROM TodoItems WHERE id=:id")
+  suspend fun getTask(id: String) : TodoItem?
+
   @Query("SELECT * FROM TodoItems")
   fun getAllTasksFlow(): Flow<List<TodoItem>>
 
   @Query("SELECT (SELECT COUNT(*) FROM TodoItems) == 0")
-  fun isEmpty(): Boolean
+  suspend fun isEmpty(): Boolean
 }

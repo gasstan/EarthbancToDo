@@ -1,4 +1,4 @@
-package com.earthbanc.todo.screen.home
+package com.earthbanc.todo.screen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -11,13 +11,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val tasksRepo: TasksRepository) : ViewModel() {
+class TasksViewModel(private val tasksRepo: TasksRepository) : ViewModel() {
 
   val tasks: StateFlow<Resource<List<TodoItem>>> =
     tasksRepo.getTasks().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Resource.Empty())
 
+  fun getTask(id: String) = tasksRepo.getTask(id)
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Resource.Empty())
+
   fun updateTask(todoItem: TodoItem) {
-    Log.e("HomeViewModel" , "updating task")
+    Log.e("HomeViewModel", "updating task")
     addNewTask(todoItem)
   }
 

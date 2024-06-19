@@ -4,7 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.earthbanc.todo.screen.home.HomeScreen
+import androidx.navigation.compose.rememberNavController
+import com.earthbanc.todo.navigation.AppNavHost
 import com.earthbanc.todo.ui.theme.EarthbancToDoTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +14,7 @@ class MainActivity : ComponentActivity() {
     enableEdgeToEdge()
     setContent {
       EarthbancToDoTheme {
-        HomeScreen()
+        AppNavHost(navController = rememberNavController())
       }
     }
   }

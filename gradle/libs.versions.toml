@@ -12,6 +12,7 @@ roomVersion = "2.6.1"
 ktorVersion = "1.5.0"
 kotlinSerialization = "1.0.1"
 koinVersion = "3.5.6"
+navVersion = "2.7.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,12 +33,15 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navVersion" }
+
 ktor-client = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktorVersion" }
 ktor-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktorVersion" }
 ktor-logging = { group = "io.ktor", name = "ktor-client-logging-jvm", version.ref = "ktorVersion" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 koin-core = { group = "io.insert-koin", name = "koin-android", version.ref = "koinVersion" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinVersion" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -30,8 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.earthbanc.todo.R
 import com.earthbanc.todo.model.TodoItem
+import com.earthbanc.todo.navigation.Destinations
+import com.earthbanc.todo.screen.TasksViewModel
 import com.earthbanc.todo.utils.onEmpty
 import com.earthbanc.todo.utils.onFailure
 import com.earthbanc.todo.utils.onLoading
@@ -40,7 +43,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
+fun HomeScreen(navController: NavHostController, viewModel: TasksViewModel = koinViewModel()) {
   val tasks by viewModel.tasks.collectAsStateWithLifecycle()
 
   Scaffold(
@@ -53,10 +56,11 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     modifier = Modifier.fillMaxSize()
   ) { innerPadding ->
     tasks
-      .onSuccess {
+      .onSuccess { tasks ->
         ContentComposable(
-          tasks = it,
+          tasks = tasks,
           onCheckBoxClick = viewModel::updateTask,
+          onItemClick = { todoItem -> navController.navigate(Destinations.Detail(todoItem.id.toString()).route) },
           modifier = Modifier.padding(innerPadding)
         )
       }
@@ -70,12 +74,17 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
 private fun ContentComposable(
   tasks: List<TodoItem>,
   onCheckBoxClick: (TodoItem) -> Unit,
+  onItemClick: (TodoItem) -> Unit,
   modifier: Modifier = Modifier
 ) {
 
   LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
     items(tasks) { todoItem ->
-      TodoItemComposable(item = todoItem, onItemClick = {}, onCheckBoxClick = onCheckBoxClick)
+      TodoItemComposable(
+        item = todoItem,
+        onItemClick = onItemClick,
+        onCheckBoxClick = onCheckBoxClick
+      )
       Spacer(modifier = Modifier.height(8.dp))
     }
   }
