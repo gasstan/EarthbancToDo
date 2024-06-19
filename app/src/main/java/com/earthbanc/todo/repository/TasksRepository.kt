@@ -44,6 +44,10 @@ class TasksRepository(
     database.todoItemDao().insertTask(todoItem)
   }
 
+  suspend fun deleteTask(task: TodoItem) = withContext(Dispatchers.IO) {
+    database.todoItemDao().delete(task)
+  }
+
   private suspend fun getTasksFromNetwork(): Flow<Resource<List<TodoItem>>> =
     flow {
       val tasks = try {

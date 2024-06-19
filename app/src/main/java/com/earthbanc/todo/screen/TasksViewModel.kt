@@ -1,5 +1,6 @@
 package com.earthbanc.todo.screen
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 class TasksViewModel(private val tasksRepo: TasksRepository) : ViewModel() {
 
@@ -22,10 +24,26 @@ class TasksViewModel(private val tasksRepo: TasksRepository) : ViewModel() {
 
   fun updateTask(todoItem: TodoItem) {
     Log.e("HomeViewModel", "updating task")
-    addNewTask(todoItem)
+    viewModelScope.launch { tasksRepo.insertTask(todoItem) }
   }
 
-  fun addNewTask(todoItem: TodoItem) {
-    viewModelScope.launch { tasksRepo.insertTask(todoItem) }
+  @SuppressLint("NewApi")
+  fun addNewTask(title: String, description: String) {
+    viewModelScope.launch {
+      tasksRepo.insertTask(
+        TodoItem(
+          createdAt = Instant.now(),
+          title = title,
+          description = description,
+          completed = false,
+        )
+      )
+    }
+  }
+
+  fun deleteTask(task: TodoItem) {
+    viewModelScope.launch {
+      tasksRepo.deleteTask(task)
+    }
   }
 }

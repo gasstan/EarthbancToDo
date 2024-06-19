@@ -23,6 +23,6 @@ data class TodoItem(
   var completed: Boolean,
   @SerialName("id")
   @PrimaryKey(autoGenerate = true)
-  var id: Long
+  var id: Long = 0
 )
 

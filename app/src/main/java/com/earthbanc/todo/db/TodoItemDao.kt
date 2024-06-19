@@ -1,6 +1,7 @@
 package com.earthbanc.todo.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,11 +17,14 @@ interface TodoItemDao {
   suspend fun insertTasks(todoItems: List<TodoItem>)
 
   @Query("SELECT * FROM TodoItems WHERE id=:id")
-  fun getTask(id: String) : TodoItem?
+  suspend fun getTask(id: String): TodoItem?
 
   @Query("SELECT * FROM TodoItems")
   fun getAllTasksFlow(): Flow<List<TodoItem>>
 
   @Query("SELECT (SELECT COUNT(*) FROM TodoItems) == 0")
   suspend fun isEmpty(): Boolean
+
+  @Delete
+  suspend fun delete(task: TodoItem)
 }
